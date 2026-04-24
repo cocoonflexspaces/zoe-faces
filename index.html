@@ -2,34 +2,68 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Cocoon × Zoe — Face Options</title>
+<title>Cocoon × Zoe — Visual Identity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   :root {
     --ink: #0b0b0b;
     --cream: #f5efe2;
+    --bone: #f3ebdd;
     --red: #e25038;
     --red-deep: #9e2010;
     --muted: #6b6b6b;
+    --rule: rgba(11,11,11,0.12);
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; background: var(--cream); color: var(--ink);
-    font-family: "Inter", "Helvetica Neue", Arial, sans-serif; line-height: 1.55; }
-  .wrap { max-width: 1280px; margin: 0 auto; padding: 64px 48px 96px; }
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif; line-height: 1.55;
+    -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 56px 48px 96px; }
 
-  header { text-align: center; margin-bottom: 64px; }
-  header h1 {
-    font-family: "Georgia", serif;
-    font-size: 54px; font-weight: 900;
-    margin: 0 0 10px; letter-spacing: -1px;
-    text-transform: uppercase;
+  /* HEADER */
+  header.top { text-align: center; padding-bottom: 36px; border-bottom: 0.5px solid var(--rule); margin-bottom: 8px; }
+  header.top h1 {
+    font-family: Georgia, serif; font-size: 56px; font-weight: 900;
+    margin: 0 0 12px; letter-spacing: -1.2px; text-transform: uppercase;
   }
-  header .tagline {
-    font-size: 16px; color: var(--muted);
-    margin: 0;
+  header.top .lede {
+    font-size: 16px; color: var(--muted); margin: 0 auto 20px; max-width: 720px;
   }
-  header .tagline .pop { color: var(--ink); font-weight: 600; }
-  header .tagline .red { color: var(--red); font-weight: 600; }
+  header.top .pop { color: var(--ink); font-weight: 600; }
+  header.top .red { color: var(--red); font-weight: 600; }
+  header.top nav {
+    display: flex; justify-content: center; gap: 22px; flex-wrap: wrap;
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+    margin-top: 28px;
+  }
+  header.top nav a { color: var(--muted); text-decoration: none; padding: 6px 0; border-bottom: 2px solid transparent; transition: color 0.15s; }
+  header.top nav a:hover { color: var(--red); border-bottom-color: var(--red); }
 
+  /* SECTION (per persona) */
+  section.persona {
+    padding: 80px 0 24px;
+    border-bottom: 0.5px solid var(--rule);
+  }
+  section.persona:last-of-type { border-bottom: none; }
+
+  .section-head {
+    text-align: center; margin-bottom: 56px;
+  }
+  .section-head .label {
+    display: inline-block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--red); font-weight: 700; padding: 6px 12px;
+    border: 1px solid var(--red); border-radius: 999px; margin-bottom: 18px;
+  }
+  .section-head h2 {
+    font-family: Georgia, serif; font-size: 40px; font-weight: 900;
+    margin: 0 0 12px; letter-spacing: -0.6px;
+  }
+  .section-head p.tagline {
+    font-family: Georgia, serif; font-style: italic; font-size: 16px;
+    color: var(--muted); margin: 0 auto; max-width: 600px;
+  }
+
+  /* GRID OF 3 OPTIONS */
   .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -37,25 +71,13 @@
   }
   @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
 
-  .card {
-    background: transparent;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
+  .card { text-align: center; display: flex; flex-direction: column; align-items: center; }
   .badge {
     display: inline-block;
-    background: var(--ink);
-    color: var(--cream);
-    font-family: "Georgia", serif;
-    font-size: 11px;
-    letter-spacing: 3px;
-    padding: 8px 16px 7px;
-    border-radius: 2px;
-    margin-bottom: 20px;
-    text-transform: uppercase;
+    background: var(--ink); color: var(--cream);
+    font-family: Georgia, serif; font-size: 11px;
+    letter-spacing: 3px; padding: 8px 16px 7px;
+    border-radius: 2px; margin-bottom: 20px; text-transform: uppercase;
   }
   .card:nth-child(2) .badge { background: var(--red); }
   .card:nth-child(3) .badge { background: var(--red-deep); }
@@ -64,131 +86,217 @@
     width: 320px; height: 320px;
     border-radius: 50%;
     overflow: hidden;
-    background: var(--red);
+    background: var(--bone);
     box-shadow: 0 10px 32px rgba(0,0,0,0.08);
-    margin-bottom: 28px;
+    margin-bottom: 24px;
   }
-  .portrait img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-  }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-  .card h2 {
-    font-family: "Georgia", serif;
-    font-size: 36px;
-    font-weight: 900;
-    margin: 0 0 4px;
-    letter-spacing: -0.5px;
+  /* On Off-Duty section, portraits sit on coral */
+  #off-duty .portrait { background: var(--red); }
+
+  .card h3 {
+    font-family: Georgia, serif; font-size: 30px; font-weight: 900;
+    margin: 0 0 4px; letter-spacing: -0.4px;
   }
-  .card h2 .spark { color: var(--red); margin-left: 4px; }
+  .card h3 .spark { color: var(--red); margin-left: 4px; }
   .card .sub {
-    font-family: "Georgia", serif;
-    font-style: italic;
-    font-size: 14px;
-    color: var(--muted);
-    margin: 0 0 24px;
-    max-width: 260px;
+    font-family: Georgia, serif; font-style: italic; font-size: 14px;
+    color: var(--muted); margin: 0 0 18px; max-width: 240px;
   }
 
-  .traits { list-style: none; padding: 0; margin: 0; text-align: left; max-width: 260px; width: 100%; }
+  .traits { list-style: none; padding: 0; margin: 0; text-align: left; max-width: 240px; width: 100%; }
   .traits li {
-    display: flex; align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 10px;
-    font-size: 13px;
-    color: var(--ink);
+    display: flex; align-items: flex-start; gap: 10px;
+    margin-bottom: 8px; font-size: 13px; color: var(--ink);
   }
   .traits li .dot {
-    flex: 0 0 8px;
-    width: 8px; height: 8px;
-    background: var(--red);
-    border-radius: 50%;
-    margin-top: 7px;
+    flex: 0 0 6px; width: 6px; height: 6px;
+    background: var(--red); border-radius: 50%; margin-top: 7px;
   }
   .card:nth-child(1) .traits li .dot { background: var(--ink); }
   .card:nth-child(3) .traits li .dot { background: var(--red-deep); }
 
   footer {
-    margin-top: 72px;
-    border-top: 0.5px solid rgba(0,0,0,0.15);
-    padding-top: 24px;
+    margin-top: 72px; padding-top: 24px;
+    border-top: 0.5px solid var(--rule);
     text-align: center;
-    font-family: "Georgia", serif;
-    font-style: italic;
-    font-size: 14px;
-    color: var(--muted);
+    font-family: Georgia, serif; font-style: italic; font-size: 14px; color: var(--muted);
   }
-  footer strong { color: var(--ink); font-weight: 700; font-style: normal; letter-spacing: 1px; text-transform: uppercase; font-size: 12px; }
+  footer .stamp { font-family: Inter, sans-serif; font-style: normal; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase; font-size: 11px; color: var(--ink); }
+
+  /* Coming-soon placeholder for unbuilt personas */
+  .soon {
+    grid-column: 1 / -1;
+    text-align: center; padding: 60px 24px;
+    border: 1px dashed var(--rule); border-radius: 6px;
+    color: var(--muted); font-style: italic; font-family: Georgia, serif; font-size: 14px;
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<header>
-  <h1>Zoe — Face Options</h1>
-  <p class="tagline">
+<header class="top">
+  <h1>Zoe — Visual Identity</h1>
+  <p class="lede">
     <span class="pop">Sharp.</span>
     <span class="red">Unconventional.</span>
     <span class="pop">Professional.</span>
     <span class="red">Diverse.</span>
     <span class="pop">Cocoon.</span>
   </p>
+  <p class="lede" style="font-family: Georgia, serif; font-style: italic;">
+    Five direction options × three face variants. Pick the face you want to live with — same Zoe DNA across every direction.
+  </p>
+  <nav>
+    <a href="#off-duty">Off-Duty</a>
+    <a href="#architect">Architect</a>
+    <a href="#rooftop">Rooftop · soon</a>
+    <a href="#curator">Curator · soon</a>
+    <a href="#graphic">Graphic · soon</a>
+  </nav>
 </header>
 
-<div class="grid">
-
-  <div class="card">
-    <div class="badge">Option 1</div>
-    <div class="portrait">
-      <img src="renders/zoe-1-ponytail.webp" alt="Zoe Option 1 — slicked ponytail">
-    </div>
-    <h2>ZOE<span class="spark">✦</span></h2>
-    <p class="sub">Saldana × Kravitz blend.<br>Sleek, sharp, and composed.</p>
-    <ul class="traits">
-      <li><span class="dot"></span>Slicked-back low ponytail</li>
-      <li><span class="dot"></span>Angular sharp features</li>
-      <li><span class="dot"></span>Medium olive-warm skin</li>
-      <li><span class="dot"></span>Premiere-ready energy</li>
-    </ul>
+<!-- ============ OFF-DUTY ============ -->
+<section class="persona" id="off-duty">
+  <div class="section-head">
+    <span class="label">Direction 01 / 05 — Off-Duty</span>
+    <h2>Off-Duty Zoe</h2>
+    <p class="tagline">Saldana × Kravitz blend. Polished but unbothered. The anchor look.</p>
   </div>
 
-  <div class="card">
-    <div class="badge">Option 2</div>
-    <div class="portrait">
-      <img src="renders/zoe-2-pixie.webp" alt="Zoe Option 2 — platinum pixie">
+  <div class="grid">
+
+    <div class="card">
+      <div class="badge">Option 1</div>
+      <div class="portrait"><img src="renders/zoe-1-ponytail.webp" alt="Zoe Option 1"></div>
+      <h3>ZOE<span class="spark">✦</span></h3>
+      <p class="sub">Sleek slicked ponytail. Premiere-ready energy.</p>
+      <ul class="traits">
+        <li><span class="dot"></span>Slicked-back low ponytail</li>
+        <li><span class="dot"></span>Medium olive-warm skin</li>
+        <li><span class="dot"></span>Saldana × Kravitz blend</li>
+      </ul>
     </div>
-    <h2>ZOE<span class="spark">✦</span></h2>
-    <p class="sub">Saldana-sculptural.<br>Most overtly editorial, bold hair choice.</p>
-    <ul class="traits">
-      <li><span class="dot"></span>Platinum pixie crop</li>
-      <li><span class="dot"></span>Deep warm brown skin</li>
-      <li><span class="dot"></span>High sculptural cheekbones</li>
-      <li><span class="dot"></span>Most distinctive silhouette</li>
-    </ul>
+
+    <div class="card">
+      <div class="badge">Option 2</div>
+      <div class="portrait"><img src="renders/zoe-2-pixie.webp" alt="Zoe Option 2"></div>
+      <h3>ZOE<span class="spark">✦</span></h3>
+      <p class="sub">Platinum pixie. Most distinctive silhouette.</p>
+      <ul class="traits">
+        <li><span class="dot"></span>Platinum pixie crop</li>
+        <li><span class="dot"></span>Deep warm brown skin</li>
+        <li><span class="dot"></span>Saldana-sculptural</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="badge">Option 3</div>
+      <div class="portrait"><img src="renders/zoe-3-afro.webp" alt="Zoe Option 3"></div>
+      <h3>ZOE<span class="spark">✦</span></h3>
+      <p class="sub">Voluminous afro puff. Most approachable.</p>
+      <ul class="traits">
+        <li><span class="dot"></span>Natural afro puff</li>
+        <li><span class="dot"></span>Warm caramel-honey skin</li>
+        <li><span class="dot"></span>Kravitz-warm</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ ARCHITECT ============ -->
+<section class="persona" id="architect">
+  <div class="section-head">
+    <span class="label">Direction 02 / 05 — Architect</span>
+    <h2>Architect Zoe</h2>
+    <p class="tagline">Quiet authority. She's already sketched the floorplan. Adds wire glasses + blueprint backdrop.</p>
   </div>
 
-  <div class="card">
-    <div class="badge">Option 3</div>
-    <div class="portrait">
-      <img src="renders/zoe-3-afro.webp" alt="Zoe Option 3 — afro puff">
-    </div>
-    <h2>ZOE<span class="spark">✦</span></h2>
-    <p class="sub">Kravitz-warm.<br>Natural, approachable, still edgy.</p>
-    <ul class="traits">
-      <li><span class="dot"></span>Voluminous natural afro puff</li>
-      <li><span class="dot"></span>Warm caramel-honey skin</li>
-      <li><span class="dot"></span>Softer rounded features</li>
-      <li><span class="dot"></span>Most approachable read</li>
-    </ul>
-  </div>
+  <div class="grid">
 
-</div>
+    <div class="card">
+      <div class="badge">Option 1</div>
+      <div class="portrait"><img src="renders/zoe-1-architect.webp" alt="Architect Zoe Option 1"></div>
+      <h3>ZOE<span class="spark">✦</span></h3>
+      <p class="sub">Sleek ponytail + gold round glasses.</p>
+      <ul class="traits">
+        <li><span class="dot"></span>Slicked-back low ponytail</li>
+        <li><span class="dot"></span>Thin gold wire-frame glasses</li>
+        <li><span class="dot"></span>Composed designer</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="badge">Option 2</div>
+      <div class="portrait"><img src="renders/zoe-2-architect.webp" alt="Architect Zoe Option 2"></div>
+      <h3>ZOE<span class="spark">✦</span></h3>
+      <p class="sub">Platinum pixie + gold round glasses.</p>
+      <ul class="traits">
+        <li><span class="dot"></span>Platinum pixie crop</li>
+        <li><span class="dot"></span>Thin gold wire-frame glasses</li>
+        <li><span class="dot"></span>Sculptural minimalism</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="badge">Option 3</div>
+      <div class="portrait"><img src="renders/zoe-3-architect.webp" alt="Architect Zoe Option 3"></div>
+      <h3>ZOE<span class="spark">✦</span></h3>
+      <p class="sub">Afro puff + gold round glasses.</p>
+      <ul class="traits">
+        <li><span class="dot"></span>Voluminous afro puff</li>
+        <li><span class="dot"></span>Thin gold wire-frame glasses</li>
+        <li><span class="dot"></span>Approachable intelligence</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ ROOFTOP — placeholder ============ -->
+<section class="persona" id="rooftop">
+  <div class="section-head">
+    <span class="label">Direction 03 / 05 — Rooftop</span>
+    <h2>Rooftop Zoe</h2>
+    <p class="tagline">Golden-hour taste. Knows the best unmarked doors. Coming next.</p>
+  </div>
+  <div class="grid">
+    <div class="soon">In production · cream blazer over silk cami, golden-hour palette, brick backdrop</div>
+  </div>
+</section>
+
+<!-- ============ CURATOR — placeholder ============ -->
+<section class="persona" id="curator">
+  <div class="section-head">
+    <span class="label">Direction 04 / 05 — Curator</span>
+    <h2>Curator Zoe</h2>
+    <p class="tagline">Sculptural minimalism. Every object earns its spot. Coming after Rooftop.</p>
+  </div>
+  <div class="grid">
+    <div class="soon">Pending direction lock</div>
+  </div>
+</section>
+
+<!-- ============ GRAPHIC — placeholder ============ -->
+<section class="persona" id="graphic">
+  <div class="section-head">
+    <span class="label">Direction 05 / 05 — Graphic</span>
+    <h2>Graphic Zoe</h2>
+    <p class="tagline">Pure editorial. Medium shift, not just a styling shift. Coming last.</p>
+  </div>
+  <div class="grid">
+    <div class="soon">Pending direction lock</div>
+  </div>
+</section>
 
 <footer>
-  All three share the same fashion DNA — black turtleneck, fine gold chain, septum ring, signature Cocoon red ground.<br>
-  Pick a face. We roll it across all 5 direction personas next.<br><br>
-  <strong>Cocoon × Zoe · Modern Seinen · Round 2</strong>
+  All directions share the same Zoe DNA — black turtleneck, fine gold chain, septum ring, modern seinen anime style.<br>
+  Only the persona context, accessories, and palette accents shift between directions.<br><br>
+  <span class="stamp">Cocoon × Zoe · Round 2 · live presentation</span>
 </footer>
 
 </div>
