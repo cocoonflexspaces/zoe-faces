@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cocoon × Zoe — Face Options</title>
+<style>
+  :root {
+    --ink: #0b0b0b;
+    --cream: #f5efe2;
+    --red: #e25038;
+    --red-deep: #9e2010;
+    --muted: #6b6b6b;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--cream); color: var(--ink);
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif; line-height: 1.55; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 64px 48px 96px; }
+
+  header { text-align: center; margin-bottom: 64px; }
+  header h1 {
+    font-family: "Georgia", serif;
+    font-size: 54px; font-weight: 900;
+    margin: 0 0 10px; letter-spacing: -1px;
+    text-transform: uppercase;
+  }
+  header .tagline {
+    font-size: 16px; color: var(--muted);
+    margin: 0;
+  }
+  header .tagline .pop { color: var(--ink); font-weight: 600; }
+  header .tagline .red { color: var(--red); font-weight: 600; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: transparent;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--cream);
+    font-family: "Georgia", serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 8px 16px 7px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .card:nth-child(2) .badge { background: var(--red); }
+  .card:nth-child(3) .badge { background: var(--red-deep); }
+
+  .portrait {
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--red);
+    box-shadow: 0 10px 32px rgba(0,0,0,0.08);
+    margin-bottom: 28px;
+  }
+  .portrait img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card h2 {
+    font-family: "Georgia", serif;
+    font-size: 36px;
+    font-weight: 900;
+    margin: 0 0 4px;
+    letter-spacing: -0.5px;
+  }
+  .card h2 .spark { color: var(--red); margin-left: 4px; }
+  .card .sub {
+    font-family: "Georgia", serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0 0 24px;
+    max-width: 260px;
+  }
+
+  .traits { list-style: none; padding: 0; margin: 0; text-align: left; max-width: 260px; width: 100%; }
+  .traits li {
+    display: flex; align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .traits li .dot {
+    flex: 0 0 8px;
+    width: 8px; height: 8px;
+    background: var(--red);
+    border-radius: 50%;
+    margin-top: 7px;
+  }
+  .card:nth-child(1) .traits li .dot { background: var(--ink); }
+  .card:nth-child(3) .traits li .dot { background: var(--red-deep); }
+
+  footer {
+    margin-top: 72px;
+    border-top: 0.5px solid rgba(0,0,0,0.15);
+    padding-top: 24px;
+    text-align: center;
+    font-family: "Georgia", serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  footer strong { color: var(--ink); font-weight: 700; font-style: normal; letter-spacing: 1px; text-transform: uppercase; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Zoe — Face Options</h1>
+  <p class="tagline">
+    <span class="pop">Sharp.</span>
+    <span class="red">Unconventional.</span>
+    <span class="pop">Professional.</span>
+    <span class="red">Diverse.</span>
+    <span class="pop">Cocoon.</span>
+  </p>
+</header>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="badge">Option 1</div>
+    <div class="portrait">
+      <img src="renders/zoe-1-ponytail.webp" alt="Zoe Option 1 — slicked ponytail">
+    </div>
+    <h2>ZOE<span class="spark">✦</span></h2>
+    <p class="sub">Saldana × Kravitz blend.<br>Sleek, sharp, and composed.</p>
+    <ul class="traits">
+      <li><span class="dot"></span>Slicked-back low ponytail</li>
+      <li><span class="dot"></span>Angular sharp features</li>
+      <li><span class="dot"></span>Medium olive-warm skin</li>
+      <li><span class="dot"></span>Premiere-ready energy</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="badge">Option 2</div>
+    <div class="portrait">
+      <img src="renders/zoe-2-pixie.webp" alt="Zoe Option 2 — platinum pixie">
+    </div>
+    <h2>ZOE<span class="spark">✦</span></h2>
+    <p class="sub">Saldana-sculptural.<br>Most overtly editorial, bold hair choice.</p>
+    <ul class="traits">
+      <li><span class="dot"></span>Platinum pixie crop</li>
+      <li><span class="dot"></span>Deep warm brown skin</li>
+      <li><span class="dot"></span>High sculptural cheekbones</li>
+      <li><span class="dot"></span>Most distinctive silhouette</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="badge">Option 3</div>
+    <div class="portrait">
+      <img src="renders/zoe-3-afro.webp" alt="Zoe Option 3 — afro puff">
+    </div>
+    <h2>ZOE<span class="spark">✦</span></h2>
+    <p class="sub">Kravitz-warm.<br>Natural, approachable, still edgy.</p>
+    <ul class="traits">
+      <li><span class="dot"></span>Voluminous natural afro puff</li>
+      <li><span class="dot"></span>Warm caramel-honey skin</li>
+      <li><span class="dot"></span>Softer rounded features</li>
+      <li><span class="dot"></span>Most approachable read</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  All three share the same fashion DNA — black turtleneck, fine gold chain, septum ring, signature Cocoon red ground.<br>
+  Pick a face. We roll it across all 5 direction personas next.<br><br>
+  <strong>Cocoon × Zoe · Modern Seinen · Round 2</strong>
+</footer>
+
+</div>
+</body>
+</html>
