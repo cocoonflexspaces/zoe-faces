@@ -92,17 +92,8 @@
   }
   .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-  /* On Off-Duty section, portraits sit on coral */
-  #off-duty .portrait { background: var(--red); }
-
-  /* Architect renders have a smaller coral circle inside cream corners — scale up
-     the image inside the round-tile so the coral circle fills the visible clip
-     and the cream gets pushed outside the border-radius mask. */
-  #architect .portrait { background: var(--red); }
-  #architect .portrait img {
-    transform: scale(1.32);
-    transform-origin: center;
-  }
+  /* All persona portraits sit on coral */
+  #off-duty .portrait, #architect .portrait { background: var(--red); }
 
   .card h3 {
     font-family: Georgia, serif; font-size: 30px; font-weight: 900;
