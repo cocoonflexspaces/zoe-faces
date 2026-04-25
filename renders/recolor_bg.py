@@ -33,16 +33,22 @@ def recolor(infile, outfile):
     # Platinum-blonde hair detector. Sample colors:
     #   platinum (244,234,210): L=0.89, R-B=34, R-G=10  ← subject
     #   cream    (246,247,238): L=0.95, R-B= 8, R-G=-1  ← background (excluded by R-B<20)
-    is_platinum = (L > 0.78) & ((R - B) >= 20) & ((R - B) < 60) & ((R - G) < 30)
+    # Platinum hair detector — looser thresholds to catch more hair pixels.
+    is_platinum = (L > 0.75) & ((R - B) >= 15) & ((R - B) < 70) & ((R - G) < 35)
 
-    subject_mask = is_dark | is_warm_subject | is_platinum
-
-    # Outer-ring cleanup: kill any leftover light pixels in the outer ring
-    # (boundary haze between cream and coral). Subject pixels there are
-    # shoulders (dark) or warm skin/gold (G-B > 25) — both protected.
+    # Distance from center
     h, w = R.shape
     yy, xx = np.indices((h, w))
     dist = np.sqrt((yy - h / 2) ** 2 + (xx - w / 2) ** 2)
+
+    # PROTECTED CENTER (eyes, nose, lips): radius < 280, but NOT for
+    # lighter-coral pixels (R clearly > G AND > B).
+    is_lighter_coral_pixel = (R > G + 80) & (R > B + 80)
+    protected_inner = (dist < 280) & ~is_lighter_coral_pixel
+
+    subject_mask = is_dark | is_warm_subject | is_platinum | protected_inner
+
+    # Outer-ring cleanup
     outer_ring = dist > 360
     outer_haze = outer_ring & (L > 0.55) & ~is_warm_subject
     subject_mask = subject_mask & ~outer_haze
