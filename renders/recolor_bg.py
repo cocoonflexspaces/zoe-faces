@@ -69,9 +69,13 @@ def recolor(infile, outfile):
     outer_haze = outer_ring & (L > 0.55) & ~is_warm_subject & ~platinum_dilated
     subject_mask = subject_mask & ~outer_haze
 
-    # Convert mask to PIL, slight smooth edge
+    # Convert mask to PIL, stronger smoothing on the boundary to eliminate
+    # jagged "shadow line" artifacts at subject edges (especially shoulders).
     mask_img = Image.fromarray((subject_mask.astype(np.uint8) * 255), mode='L')
-    mask_img = mask_img.filter(ImageFilter.GaussianBlur(radius=1.2))
+    # MedianFilter cleans up isolated speckles without blurring the shape;
+    # then a light Gaussian feathers the edge smoothly.
+    mask_img = mask_img.filter(ImageFilter.MedianFilter(size=3))
+    mask_img = mask_img.filter(ImageFilter.GaussianBlur(radius=2.0))
 
     # Solid coral background
     bg = Image.new('RGB', (W, H), TARGET_CORAL)
