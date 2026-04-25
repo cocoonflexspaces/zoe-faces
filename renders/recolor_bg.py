@@ -48,6 +48,13 @@ def recolor(infile, outfile):
 
     subject_mask = is_dark | is_warm_subject | is_platinum | protected_inner
 
+    # DILATE the subject mask by ~6 pixels to catch hair-edge pixels that
+    # sit right next to platinum but whose color got shifted by the original
+    # coral bleeding in (turns coral-tinted but is really hair).
+    mask_pil = Image.fromarray(subject_mask.astype(np.uint8) * 255, mode='L')
+    dilated = mask_pil.filter(ImageFilter.MaxFilter(size=13))
+    subject_mask = np.array(dilated) > 128
+
     # Outer-ring cleanup — spare platinum hair which can extend into outer ring
     outer_ring = dist > 360
     outer_haze = outer_ring & (L > 0.55) & ~is_warm_subject & ~is_platinum
