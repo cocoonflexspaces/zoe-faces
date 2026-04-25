@@ -95,10 +95,11 @@
   /* All persona portraits sit on coral */
   #off-duty .portrait, #architect .portrait { background: var(--red); }
 
-  /* Architect renders are framed wider than Off-Duty — scale up
-     inside the round tile so the subject's shoulders crop at the circle
-     edge similarly to Off-Duty without clipping the top of the head. */
+  /* Architect renders are framed wider than Off-Duty — scale per-face
+     so each subject fills the circle without clipping the hair.
+     V3 (afro) needs less zoom because the hair is taller. */
   #architect .portrait img { transform: scale(1.30); transform-origin: center; }
+  #architect .card:nth-child(3) .portrait img { transform: scale(1.15); }
 
   .card h3 {
     font-family: Georgia, serif; font-size: 30px; font-weight: 900;

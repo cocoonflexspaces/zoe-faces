@@ -48,9 +48,9 @@ def recolor(infile, outfile):
 
     subject_mask = is_dark | is_warm_subject | is_platinum | protected_inner
 
-    # Outer-ring cleanup
+    # Outer-ring cleanup — spare platinum hair which can extend into outer ring
     outer_ring = dist > 360
-    outer_haze = outer_ring & (L > 0.55) & ~is_warm_subject
+    outer_haze = outer_ring & (L > 0.55) & ~is_warm_subject & ~is_platinum
     subject_mask = subject_mask & ~outer_haze
 
     # Convert mask to PIL, slight smooth edge
