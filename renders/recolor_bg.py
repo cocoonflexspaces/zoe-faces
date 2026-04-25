@@ -69,13 +69,16 @@ def recolor(infile, outfile):
     outer_haze = outer_ring & (L > 0.55) & ~is_warm_subject & ~platinum_dilated
     subject_mask = subject_mask & ~outer_haze
 
-    # Convert mask to PIL, stronger smoothing on the boundary to eliminate
-    # jagged "shadow line" artifacts at subject edges (especially shoulders).
+    # Convert mask to PIL.
     mask_img = Image.fromarray((subject_mask.astype(np.uint8) * 255), mode='L')
-    # MedianFilter cleans up isolated speckles without blurring the shape;
-    # then a light Gaussian feathers the edge smoothly.
-    mask_img = mask_img.filter(ImageFilter.MedianFilter(size=3))
-    mask_img = mask_img.filter(ImageFilter.GaussianBlur(radius=2.0))
+    # Median filter kills isolated speckles.
+    mask_img = mask_img.filter(ImageFilter.MedianFilter(size=5))
+    # ERODE the mask ~3 px: the rim pixels of the subject (shoulders/hair
+    # edges) carry lighter-coral bleed from ERNIE's rendering. Shrinking
+    # the mask replaces that bleed ring with solid coral — no shadow line.
+    mask_img = mask_img.filter(ImageFilter.MinFilter(size=7))
+    # Feather transition.
+    mask_img = mask_img.filter(ImageFilter.GaussianBlur(radius=2.5))
 
     # Solid coral background
     bg = Image.new('RGB', (W, H), TARGET_CORAL)
