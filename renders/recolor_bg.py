@@ -30,15 +30,22 @@ def recolor(infile, outfile):
     is_dark = L < 0.45
     is_warm_subject = (G - B) > 25
 
-    # Catch platinum-blonde hair: very light, near center (subject area).
-    # Platinum  (244,234,210): L=0.89, near center → mask
-    # Cream — typically lives in image corners (radius > 480), not here.
+    # Platinum-blonde hair detector. Sample colors:
+    #   platinum (244,234,210): L=0.89, R-B=34, R-G=10  ← subject
+    #   cream    (246,247,238): L=0.95, R-B= 8, R-G=-1  ← background (excluded by R-B<20)
+    is_platinum = (L > 0.78) & ((R - B) >= 20) & ((R - B) < 60) & ((R - G) < 30)
+
+    subject_mask = is_dark | is_warm_subject | is_platinum
+
+    # Outer-ring cleanup: kill any leftover light pixels in the outer ring
+    # (boundary haze between cream and coral). Subject pixels there are
+    # shoulders (dark) or warm skin/gold (G-B > 25) — both protected.
     h, w = R.shape
     yy, xx = np.indices((h, w))
     dist = np.sqrt((yy - h / 2) ** 2 + (xx - w / 2) ** 2)
-    is_inner_light = (dist < 380) & (L > 0.78)
-
-    subject_mask = is_dark | is_warm_subject | is_inner_light
+    outer_ring = dist > 360
+    outer_haze = outer_ring & (L > 0.55) & ~is_warm_subject
+    subject_mask = subject_mask & ~outer_haze
 
     # Convert mask to PIL, slight smooth edge
     mask_img = Image.fromarray((subject_mask.astype(np.uint8) * 255), mode='L')
