@@ -33,31 +33,40 @@ def recolor(infile, outfile):
     # Platinum-blonde hair detector. Sample colors:
     #   platinum (244,234,210): L=0.89, R-B=34, R-G=10  ← subject
     #   cream    (246,247,238): L=0.95, R-B= 8, R-G=-1  ← background (excluded by R-B<20)
-    # Platinum hair detector — looser thresholds to catch more hair pixels.
-    is_platinum = (L > 0.75) & ((R - B) >= 15) & ((R - B) < 70) & ((R - G) < 35)
-
-    # Distance from center
+    # Distance from center (needed for spatial constraints)
     h, w = R.shape
     yy, xx = np.indices((h, w))
     dist = np.sqrt((yy - h / 2) ** 2 + (xx - w / 2) ** 2)
+
+    # Platinum hair detector — spatially constrained to subject area.
+    # Hair doesn't live in image corners (dist > 500); confining the detector
+    # there eliminates speckles from JPEG-compressed cream misclassification.
+    is_platinum = (
+        (L > 0.75)
+        & ((R - B) >= 15)
+        & ((R - B) < 70)
+        & ((R - G) < 35)
+        & (dist < 450)
+    )
 
     # PROTECTED CENTER (eyes, nose, lips): radius < 280, but NOT for
     # lighter-coral pixels (R clearly > G AND > B).
     is_lighter_coral_pixel = (R > G + 80) & (R > B + 80)
     protected_inner = (dist < 280) & ~is_lighter_coral_pixel
 
-    subject_mask = is_dark | is_warm_subject | is_platinum | protected_inner
+    # Clean the platinum mask:
+    # 1. Erode (MinFilter) to kill isolated pixels (JPEG-compressed cream)
+    # 2. Dilate (MaxFilter) to catch hair-edge pixels next to real platinum
+    # Result: only connected platinum regions expand, stray pixels disappear.
+    platinum_pil = Image.fromarray(is_platinum.astype(np.uint8) * 255, mode='L')
+    eroded = platinum_pil.filter(ImageFilter.MinFilter(size=5))
+    platinum_dilated = np.array(eroded.filter(ImageFilter.MaxFilter(size=19))) > 128
 
-    # DILATE the subject mask by ~6 pixels to catch hair-edge pixels that
-    # sit right next to platinum but whose color got shifted by the original
-    # coral bleeding in (turns coral-tinted but is really hair).
-    mask_pil = Image.fromarray(subject_mask.astype(np.uint8) * 255, mode='L')
-    dilated = mask_pil.filter(ImageFilter.MaxFilter(size=13))
-    subject_mask = np.array(dilated) > 128
+    subject_mask = is_dark | is_warm_subject | platinum_dilated | protected_inner
 
-    # Outer-ring cleanup — spare platinum hair which can extend into outer ring
+    # Outer-ring cleanup — spare real platinum hair (dilated) that extends out
     outer_ring = dist > 360
-    outer_haze = outer_ring & (L > 0.55) & ~is_warm_subject & ~is_platinum
+    outer_haze = outer_ring & (L > 0.55) & ~is_warm_subject & ~platinum_dilated
     subject_mask = subject_mask & ~outer_haze
 
     # Convert mask to PIL, slight smooth edge
